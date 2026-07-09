@@ -1,67 +1,64 @@
 # AI-Player (fork)
 
-> **Compatibilidade:** este fork atualmente funciona apenas com **Minecraft 1.21.1**.
+> **Compatibility:** This fork currently works only with **Minecraft 1.21.1**.
 
-Este é um fork pessoal/hobby do mod [AI-Player](https://github.com/shasankp000/AI-Player), adaptado para rodar no **PojavLauncher** (Minecraft Java Edition no Android/iOS). O objetivo aqui é manter o mod leve e funcional nesse ambiente, sem depender de modelos locais pesados. O PojavLauncher foi descontinuado em 2025; este fork é feito principalmente para o seu sucessor, o **MojoLauncher**, mas também deve funcionar no PojavLauncher (não foi testado).
+This is a personal/hobby fork of the [AI-Player](https://github.com/shasankp000/AI-Player) mod, adapted to run on **PojavLauncher** (Minecraft Java Edition on Android/iOS). The goal here is to keep the mod lightweight and functional in this environment, without relying on heavy local models. PojavLauncher was discontinued in 2025; this fork is primarily intended for its successor, **MojoLauncher**, but it should also work on PojavLauncher (though this has not been tested).
 
 ---
 
-## O que mudou neste fork
+## What has changed in this fork
 
-- **Sem downloads de modelos locais** — não baixa mais BERT/LIDSNet/CART/OpenNLP (~100MB+) no startup.
-- **Intent classification via LLM cloud** — usa o provedor configurado (`gemini`, `openai`, `claude`, `grok`, `custom`). Só recorre ao Ollama se você escolher explicitamente esse modo.
-- **Embeddings privados** — ao invés de enviar memórias para a Google/Gemini, você aponta para o seu próprio servidor de embeddings via `settings.json5`.
-- **Busca vetorial em Java puro** — cosine similarity sem extensões nativas `sqlite-vec`/`sqlite-vss`.
-- **Build mais leve** — DJL/PyTorch/libtorch removidos do `.jar`.
-
-### Configuração do embedding privado (`settings.json5`)
+- **No local model downloads** — it no longer downloads BERT/LIDSNet/CART/OpenNLP (~100MB+) at startup.
+- **Intent classification via cloud LLM** — uses the configured provider (`gemini`, `openai`, `claude`, `grok`, `custom`). It only falls back to Ollama if you explicitly choose that mode.
+- **Private embeddings** — instead of sending memories to Google/Gemini, you point to your own embedding server via `settings.json5`.
+- **Pure Java vector search** — cosine similarity without native `sqlite-vec`/`sqlite-vss` extensions.
+- **Lighter build** — DJL/PyTorch/libtorch removed from the `.jar`. ### Private embedding configuration (`settings.json5`)
 
 ```json5
 {
-  "embeddingApiUrl": "http://seu-servidor:8080",
-  "embeddingApiKey": "",
-  "embeddingModel": "local-embedding"
+"embeddingApiUrl": "http://your-server:8080",
+"embeddingApiKey": "",
+"embeddingModel": "local-embedding"
 }
 ```
 
-O servidor deve expor um endpoint **OpenAI-compatible** `/v1/embeddings`:
-- Request: `POST {embeddingApiUrl}/v1/embeddings` com `{"input": "...", "model": "..."}`
+The server must expose an **OpenAI-compatible** `/v1/embeddings` endpoint:
+- Request: `POST {embeddingApiUrl}/v1/embeddings` with `{"input": "...", "model": "..."}`
 - Response: `{"data": [{"embedding": [...]}]}`
 
-Se `embeddingApiUrl` estiver vazio, o mod funciona normalmente — só não lembra conversas antigas (RAG opcional).
+If `embeddingApiUrl` is empty, the mod works normally—it just won't remember past conversations (RAG is optional).
 
-### Comandos
+### Commands
 
-- `/bot resetmemories` — limpa todas as memórias RAG do `memory_agent.db` (útil ao trocar modelo de embedding ou dimensão).
+- `/bot resetmemories` — clears all RAG memories from `memory_agent.db` (useful when changing the embedding model or dimension).
 
 ---
 
-## Sobre o mod original
+## About the original mod
 
-O AI-Player original foi criado por **shasankp000** com o objetivo de eliminar a solidão no Minecraft, adicionando um "segundo jogador" realmente inteligente no jogo. O projeto cresceu muito e hoje conta com:
+The original AI-Player was created by **shasankp000** with the goal of eliminating loneliness in Minecraft by adding a truly intelligent "second player" to the game. The project has grown significantly and now features:
 
-- Q-Learning para aprendizado de combate/reflexos
-- RAG com banco de dados vetorial e busca web
-- Múltiplos provedores de LLM (OpenAI, Claude, Gemini, Grok, custom)
-- Sistema de metas autônomas e personalidade
-- Interface de configuração in-game
+- Q-Learning for combat learning/reflexes
+- RAG with a vector database and web search
+- Multiple LLM providers (OpenAI, Claude, Gemini, Grok, custom)
+- Autonomous goal and personality system
+- In-game configuration interface
 
-> **Para novidades, atualizações e a versão completa do mod, siga o criador original:**
+> **For news, updates, and the full version of the mod, follow the original creator:**
 > - GitHub: https://github.com/shasankp000/AI-Player
 > - Modrinth: https://modrinth.com/mod/ai-player/
 > - CurseForge: https://www.curseforge.com/minecraft/mc-mods/ai-player
 
 ---
 
-## Créditos
+## Credits
 
-- **Criador original**: [shasankp000](https://github.com/shasankp000) — todo o código original, pesquisa e evolução do mod.
-- **Apoie o criador original**:
-  - [Buy Me A Coffee](https://buymeacoffee.com/shasankp000)
-  - Ethereum: `0x47014CC9F8054593027c53996ddfDFa4ca8a5271`
-  - Bitcoin: `bc1qae6u7rqv0pmppxmr2uqfftrj4p6c7hmm3m39r5`
-  - Solana: `3U3bXZJ2NrMV9FmkaotvPaNwWthg68sRqvstJwanyhcU`
-  - Polygon (USDC): `0x47014CC9F8054593027c53996ddfDFa4ca8a5271`
+- **Original creator**: [shasankp000](https://github.com/shasankp000) — all original code, research, and mod development. - **Support the original creator**:
+- [Buy Me A Coffee](https://buymeacoffee.com/shasankp000)
+- Ethereum: `0x47014CC9F8054593027c53996ddfDFa4ca8a5271`
+- Bitcoin: `bc1qae6u7rqv0pmppxmr2uqfftrj4p6c7hmm3m39r5`
+- Solana: `3U3bXZJ2NrMV9FmkaotvPaNwWthg68sRqvstJwanyhcU`
+- Polygon (USDC): `0x47014CC9F8054593027c53996ddfDFa4ca8a5271`
 - **NLP pipeline**: https://github.com/shasankp000/NLP_2.0_pipeline
 - **Website**: https://github.com/shasankp000/AI-Player-Website
 - **Carpet mod**: https://github.com/gnembon/fabric-carpet
@@ -71,22 +68,21 @@ O AI-Player original foi criado por **shasankp000** com o objetivo de eliminar a
 
 ## Build
 
-Requer **Java 21** e IntelliJ IDEA (ou qualquer IDE compatível com Gradle).
+Requires **Java 21** and IntelliJ IDEA (or any Gradle-compatible IDE).
 
-1. Clone o repo e abra no IntelliJ.
-2. Configure o SDK para **Liberica 21** (ou qualquer JDK 21).
-3. Espere o Gradle sincronizar, depois rode `./gradlew build` no terminal.
-4. Coloque o `.jar` gerado na pasta `mods` do Minecraft.
+1. Clone the repo and open it in IntelliJ.
+2. Set the SDK to **Liberica 21** (or any JDK 21).
+3. Wait for Gradle to sync, then run `./gradlew build` in the terminal.
+4. Place the generated `.jar` file in the Minecraft `mods` folder.
 
-Se der erro no Gradle, clique no botão de refresh do Gradle na sidebar.
+If a Gradle error occurs, click the Gradle refresh button in the sidebar.
 
 ---
 
-## Uso
+## Usage
 
-1. Configure seu provedor de LLM via `/configMan` ou editando `settings.json5`.
-2. (Opcional) Configure o endpoint de embedding privado como mostrado acima.
-3. Ligue o jogo, abra `/configMan`, selecione o modelo de linguagem, salve e saia.
-4. Spawne o bot: `/bot spawn <nome> <training|play>`
+1. Configure your LLM provider via `/configMan` or by editing `settings.json5`.
+2. (Optional) Configure the private embedding endpoint as shown above. 3. Launch the game, open `/configMan`, select the language model, save, and exit.
+4. Spawn the bot: `/bot spawn <name> <training|play>`
 
-> **OBS:** este fork é um projeto pessoal/hobby, feito para rodar no PojavLauncher. Não tem relação oficial com o criador original — se curtir o mod, considere apoiar o trabalho dele.
+> **Note:** This fork is a personal/hobby project designed to run on PojavLauncher. It has no official affiliation with the original creator—if you enjoy the mod, please consider supporting their work.
